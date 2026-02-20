@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista Oficial 🏆</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- AG Grid Community (100% gratis, uso comercial permitido) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.0/styles/ag-grid.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.0/styles/ag-theme-alpine.css">
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.0/dist/ag-grid-community.min.js"></script>
+
+<style>
+:root {
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --green: #34a853;
+  --green-hover: #2d8e43;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f4;
+  --gray-200: #e8eaed;
+  --gray-300: #dadce0;
+  --gray-700: #5f6368;
+  --gray-900: #202124;
+  --verde-mexicano: #00A859;
+  --rojo-mexicano: #dc2626;
+  --oro-light: #fffbeb;
+  --plateado-light: #f9fafb;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background: white;
+  color: var(--gray-900);
+  overflow-x: hidden;
+}
+.header {
+  height: 50px;
+  background: white;
+  border-bottom: 1px solid var(--gray-300);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  box-shadow: 0 1px 2px rgba(60,64,67,.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 500; }
+.document-title { border: none; background: transparent; font-size: 15px; font-weight: 400; padding: 6px 8px; }
+.header-actions { margin-left: auto; display: flex; gap: 6px; }
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  color: white;
+}
+.btn-azul  { background: #1a73e8; }
+.btn-azul:hover  { background: #1557b0; }
+.btn-verde { background: #34a853; }
+.btn-verde:hover { background: #2d8e43; }
+.btn-rojo  { background: #dc2626; }
+.btn-rojo:hover  { background: #b91c1c; }
+.btn-success { background: var(--green); color: white; }
+.btn-success:hover { background: var(--green-hover); }
+
+/* Container centrado para desktop - MÁS ANCHO */
+.container { 
+  max-width: none;
+  margin: 0 auto;
+  padding: 20px;
+}
+.section-title { 
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.resultados-section {
+  background: white;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+.resultados-grid {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.resultado-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  text-align: center;
+}
+.resultado-input-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+.resultado-buttons { display: flex; gap: 4px; }
+.resultado-btn {
+  padding: 8px 12px;
+  border: 2px solid var(--gray-300);
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.resultado-btn:hover { border-color: var(--primary); }
+.resultado-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.btn-guardar {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.stats-bar {
+  background: white;
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--gray-700);
+}
+.stat-value {
+  font-weight: 700;
+  color: var(--gray-900);
+  font-size: 18px;
+}
+
+/* AG Grid wrapper - CENTRADO Y MÁS ANCHO */
+.grid-wrapper {
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  margin: 0 auto 24px;
+  overflow: hidden;
+  background: white;
+}
+#myGrid { height: 900px; width: 100%; }
+
+/* CENTRAR TODO - headers y celdas */
+.ag-theme-alpine .ag-cell {
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.ag-theme-alpine .ag-header-cell-label {
+  justify-content: center !important;
+}
+
+/* Pick badges */
+.pick-correct {
+  background: var(--verde-mexicano);
+  color: white;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.pick-incorrect {
+  background: var(--rojo-mexicano);
+  color: white;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* Filas de ranking - FONDO BLANCO MUY CLARO con borde negro a la izquierda */
+.ag-row-rank-first {
+  background-color: var(--oro-light) !important;
+  font-weight: 700 !important;
+  border-left: 4px solid #000 !important;
+}
+.ag-row-rank-second {
+  background-color: var(--plateado-light) !important;
+  font-weight: 700 !important;
+  border-left: 4px solid #000 !important;
+}
+
+/* CELDAS VACÍAS EN ROJO */
+.ag-theme-alpine .ag-cell.cell-empty {
+  background-color: var(--rojo-mexicano) !important;
+}
+
+/* Columna # con borde negro */
+.ag-theme-alpine .ag-cell.col-numero {
+  border-left: 3px solid #000 !important;
+  font-weight: 600;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.loading-overlay.show { display: flex; }
+.loading-content {
+  background: white;
+  padding: 24px;
+  border-radius: 6px;
+  text-align: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--gray-200);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state {
+  text-align: center;
+  padding: 50px 16px;
+  color: #666;
+}
+.empty-icon { font-size: 56px; margin-bottom: 16px; }
+#fileInput { display: none; }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay show" id="loadingOverlay">
+  <div class="loading-content">
+    <div class="spinner"></div>
+    <div>Cargando datos...</div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="logo">
+    <input type="text" class="document-title" value="Lista Oficial 🏆" readonly>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-azul"  onclick="recargarDatos()">Actualizar 🔄</button>
+    <button class="btn btn-azul"  onclick="document.getElementById('fileInput').click()">Importar 📤</button>
+    <button class="btn btn-verde" onclick="descargarPlantilla()">Descargar plantilla 📄</button>
+    <button class="btn btn-azul"  onclick="exportarExcel()">Exportar 📥</button>
+    <button class="btn btn-rojo"  onclick="eliminarTodasLasQuinielas()">Eliminar todo 🗑️</button>
+    <input type="file" id="fileInput" accept=".csv" onchange="importarCSV(event)">
+  </div>
+</div>
+
+<div class="container">
+  <div class="resultados-section">
+    <div class="section-title">Capturar resultados oficiales 🎯</div>
+    <div class="resultados-grid" id="resultadosGrid"></div>
+    <button class="btn btn-success btn-guardar" onclick="guardarResultados()">
+      Guardar resultados oficiales 💾
+    </button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span>Total:</span>      <span class="stat-value" id="totalStat">0</span></div>
+    <div class="stat"><span>🥇 1er:</span>     <span class="stat-value" id="firstStat">0</span></div>
+    <div class="stat"><span>🥈 2do:</span>     <span class="stat-value" id="secondStat">0</span></div>
+    <div class="stat"><span>Vendedores:</span> <span class="stat-value" id="vendedoresStat">0</span></div>
+  </div>
+
+  <div class="grid-wrapper">
+    <div id="myGrid" class="ag-theme-alpine"></div>
+  </div>
+</div>
+
+<script>
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:8000'
+  : 'https://pruebas-production-ac52.up.railway.app';
+
+const MAX_ROWS = 5000;
+
+let datosOriginales = [];
+let partidos        = [];
+let resultados      = {};
+let gridApi         = null;
+let primerPuntos    = 0;
+let segundoPuntos   = 0;
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  initGrid();
+  await cargarDatos();
+  setInterval(cargarDatos, 30000);
+});
+
+function initGrid() {
+  const gridOptions = {
+    columnDefs: [],
+    rowData: [],
+    animateRows: true,
+    suppressMovableColumns: false,
+    defaultColDef: {
+      resizable: true,
+      sortable: true,
+      filter: false,
+    },
+    onGridSizeChanged: () => gridApi.sizeColumnsToFit(),
+    getRowClass: params => {
+      if (!params.data) return '';
+      if (params.data._esPrimero)  return 'ag-row-rank-first';
+      if (params.data._esSegundo)  return 'ag-row-rank-second';
+      return '';
+    },
+  };
+  gridApi = agGrid.createGrid(document.getElementById('myGrid'), gridOptions);
+}
+
+// ─── CARGA DE DATOS ──────────────────────────────────────────────────────────
+async function cargarDatos() {
+  try {
+    mostrarLoading(true);
+    const [resPartidos, resLista, resResultados] = await Promise.all([
+      fetch(`${API_BASE}/api/partidos`),
+      fetch(`${API_BASE}/api/lista-oficial`),
+      fetch(`${API_BASE}/api/resultados-oficiales`),
+    ]);
+    const dataPartidos   = await resPartidos.json();
+    const dataLista      = await resLista.json();
+    const dataResultados = await resResultados.json();
+
+    partidos        = dataPartidos.partidos   || [];
+    datosOriginales = dataLista.quinielas     || [];
+    resultados      = dataResultados.resultados || {};
+
+    renderResultadosInputs();
+    procesarDatos();
+    renderTabla();
+    actualizarEstadisticas();
+  } catch (error) {
+    mostrarError(error.message);
+  } finally {
+    mostrarLoading(false);
+  }
+}
+
+// ─── PROCESADO ───────────────────────────────────────────────────────────────
+function procesarDatos() {
+  datosOriginales = datosOriginales.map(q => {
+    let puntos = 0;
+    if (!q.picks || !Array.isArray(q.picks)) return { ...q, puntos: 0 };
+    q.picks.forEach((pick, idx) => {
+      if (resultados[String(idx)] && pick === resultados[String(idx)]) puntos++;
+    });
+    return { ...q, puntos };
+  });
+
+  // NO ORDENAR - mantener el orden original por folio
+  primerPuntos  = Math.max(...datosOriginales.map(q => q.puntos), 0);
+  const puntosUnicos = [...new Set(datosOriginales.map(q => q.puntos))].sort((a, b) => b - a);
+  segundoPuntos = puntosUnicos[1] ?? 0;
+}
+
+// ─── AG GRID: columnas ────────────────────────────────────────────────────────
+function buildColumnDefs() {
+  const pickCols = partidos.map((_, idx) => ({
+    headerName: `P${idx + 1}`,
+    field: `_pick_${idx}`,
+    width: 70,
+    sortable: false,
+    resizable: false,
+    cellClass: params => {
+      const val = params.value;
+      return (!val || val === '-' || val === '') ? 'cell-empty' : '';
+    },
+    cellRenderer: params => {
+      const val = params.value;
+      if (!val || val === '-' || val === '') return '<span>-</span>';
+      const r = resultados[String(idx)];
+      if (r && val === r)  return `<span class="pick-correct">${val}</span>`;
+      if (r)               return `<span class="pick-incorrect">${val}</span>`;
+      return `<span>${val}</span>`;
+    },
+  }));
+
+  return [
+    {
+      field: '#',
+      headerName: '#',
+      width: 70,
+      sortable: false,
+      resizable: false,
+      pinned: 'left',
+      cellClass: 'col-numero'
+    },
+    {
+      field: 'folio',
+      headerName: 'Folio',
+      width: 100,
+      sortable: false,
+      cellClass: params => (!params.value || params.value === '') ? 'cell-empty' : ''
+    },
+    {
+      field: 'nombre',
+      headerName: 'Nombre',
+      width: 200,
+      filter: 'agTextColumnFilter',
+      cellClass: params => (!params.value || params.value === '') ? 'cell-empty' : ''
+    },
+    {
+      field: 'vendedor',
+      headerName: 'Vendedor',
+      width: 150,
+      filter: 'agTextColumnFilter',
+      cellClass: params => (!params.value || params.value === '') ? 'cell-empty' : ''
+    },
+    ...pickCols,
+    {
+      field: 'puntos',
+      headerName: 'Pts',
+      width: 80,
+      cellClass: params => {
+        const val = params.value;
+        return (val === '' || val === null || val === undefined) ? 'cell-empty' : '';
+      },
+      valueFormatter: params => {
+        const val = params.value;
+        // Si es vacío, null, undefined, o "Invalid Number" → mostrar 0
+        if (val === '' || val === null || val === undefined || val === 'Invalid Number') return '0';
+        return val;
+      }
+    },
+  ];
+}
+
+// ─── AG GRID: rowData (5000 filas EXACTAS por índice de fila) ────────────────
+function buildRowData() {
+  const rows = [];
+  
+  // Crear mapa de folio -> quiniela para acceso rápido
+  const quinielaPorFolio = {};
+  datosOriginales.forEach(q => {
+    const folioNum = parseInt(q.folio);
+    if (!isNaN(folioNum)) {
+      quinielaPorFolio[folioNum] = q;
+    }
+  });
+
+  // Generar exactamente 5000 filas
+  for (let i = 1; i <= MAX_ROWS; i++) {
+    const q = quinielaPorFolio[i]; // Buscar quiniela con folio === i
+    
+    if (q) {
+      // Fila con datos
+      const row = {
+        '#':        i,
+        folio:      q.folio,
+        nombre:     q.nombre   || '',
+        vendedor:   q.vendedor || '',
+        puntos:     q.puntos ?? '',
+        _esPrimero: q.puntos === primerPuntos,
+        _esSegundo: q.puntos !== primerPuntos && segundoPuntos > 0 && q.puntos === segundoPuntos,
+      };
+      (q.picks || []).forEach((pick, idx) => {
+        row[`_pick_${idx}`] = pick || '';
+      });
+      rows.push(row);
+    } else {
+      // Fila vacía
+      const emptyRow = { '#': i, folio: '', nombre: '', vendedor: '', puntos: '' };
+      partidos.forEach((_, idx) => { emptyRow[`_pick_${idx}`] = ''; });
+      rows.push(emptyRow);
+    }
+  }
+  
+  return rows;
+}
+
+// ─── RENDER TABLA ────────────────────────────────────────────────────────────
+function renderTabla() {
+  gridApi.setGridOption('columnDefs', buildColumnDefs());
+  gridApi.setGridOption('rowData',    buildRowData());
+  setTimeout(() => gridApi.sizeColumnsToFit(), 50);
+}
+
+// ─── RESULTADOS INPUTS ───────────────────────────────────────────────────────
+function renderResultadosInputs() {
+  const container = document.getElementById('resultadosGrid');
+  let html = '';
+  partidos.forEach((_, idx) => {
+    const cur = resultados[String(idx)] || '';
+    html += `
+      <div class="resultado-input-group">
+        <label>Partido ${idx + 1}</label>
+        <div class="resultado-buttons" data-partido="${idx}">
+          <button class="resultado-btn ${cur === 'L' ? 'active' : ''}" data-val="L">L</button>
+          <button class="resultado-btn ${cur === 'E' ? 'active' : ''}" data-val="E">E</button>
+          <button class="resultado-btn ${cur === 'V' ? 'active' : ''}" data-val="V">V</button>
+        </div>
+      </div>`;
+  });
+  container.innerHTML = html;
+  container.querySelectorAll('.resultado-buttons').forEach(group => {
+    group.querySelectorAll('.resultado-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const yaActivo = btn.classList.contains('active');
+        group.querySelectorAll('.resultado-btn').forEach(b => b.classList.remove('active'));
+        if (!yaActivo) btn.classList.add('active');
+      });
+    });
+  });
+}
+
+// ─── GUARDAR RESULTADOS ───────────────────────────────────────────────────────
+async function guardarResultados() {
+  const nuevosResultados = {};
+  document.querySelectorAll('.resultado-buttons').forEach(group => {
+    const idx    = group.getAttribute('data-partido');
+    const activo = group.querySelector('.resultado-btn.active');
+    if (activo) nuevosResultados[idx] = activo.getAttribute('data-val');
+  });
+  try {
+    mostrarLoading(true);
+    const response = await fetch(`${API_BASE}/api/guardar-resultados`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ resultados: nuevosResultados }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      await cargarDatos();
+    } else {
+      throw new Error(data.mensaje || 'Error al guardar');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('❌ Error al guardar resultados');
+  } finally {
+    mostrarLoading(false);
+  }
+}
+
+// ─── ELIMINAR QUINIELAS ───────────────────────────────────────────────────────
+async function eliminarTodasLasQuinielas() {
+  if (!confirm('⚠️ ¿Estás seguro de eliminar TODAS las quinielas? Esta acción NO se puede deshacer.')) return;
+  if (!confirm('🚨 ÚLTIMA CONFIRMACIÓN: ¿Eliminar TODAS las quinielas?')) return;
+  try {
+    mostrarLoading(true);
+    const response = await fetch(`${API_BASE}/api/eliminar-todas?secret=wero2026`, {
+      method:  'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    if (data.success) {
+      alert(`✅ ${data.eliminadas} quinielas eliminadas correctamente`);
+      await cargarDatos();
+    } else {
+      throw new Error(data.mensaje || 'Error al eliminar');
+    }
+  } catch (error) {
+    alert('❌ Error: ' + error.message);
+  } finally {
+    mostrarLoading(false);
+  }
+}
+
+
+async function recargarDatos() { await cargarDatos(); }
+// ─── ESTADÍSTICAS ─────────────────────────────────────────────────────────────
+function actualizarEstadisticas() {
+  if (!datosOriginales.length) {
+    ['totalStat','firstStat','secondStat','vendedoresStat'].forEach(id =>
+      document.getElementById(id).textContent = '0');
+    return;
+  }
+  const primerCount  = datosOriginales.filter(q => q.puntos === primerPuntos).length;
+  const segundoCount = segundoPuntos > 0
+    ? datosOriginales.filter(q => q.puntos === segundoPuntos).length : 0;
+  const vendedores   = new Set(datosOriginales.map(q => q.vendedor)).size;
+
+  document.getElementById('totalStat').textContent      = datosOriginales.length;
+  document.getElementById('firstStat').textContent      = primerCount;
+  document.getElementById('secondStat').textContent     = segundoCount;
+  document.getElementById('vendedoresStat').textContent = vendedores;
+}
+
+// ─── PLANTILLA ────────────────────────────────────────────────────────────────
+function descargarPlantilla() {
+  let csv = 'Folio,Nombre,Vendedor,P1,P2,P3,P4,P5,P6,P7,P8,P9\n';
+  csv += '1,Juan Pérez,Wero,L,E,V,L,E,V,L,E,V\n';
+  csv += '2,María López,Wero,V,V,V,E,E,E,L,L,L\n';
+  descargarCSVBlob(csv, 'plantilla-quiniela.csv');
+}
+
+// ─── IMPORTAR CSV ─────────────────────────────────────────────────────────────
+function importarCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  formData.append('file', file);
+  mostrarLoading(true);
+  fetch(`${API_BASE}/api/importar-quinielas-csv?secret=wero2026`, {
+    method: 'POST',
+    body:   formData,
+  })
+  .then(res => res.json())
+  .then(async data => {
+    if (data.success) {
+      await cargarDatos();
+      let msg = `✅ ${data.importadas} quinielas importadas.`;
+      if (data.duplicados?.length) msg += `\n🔄 ${data.duplicados.length} duplicados omitidos.`;
+      if (data.errores?.length)    msg += `\n❌ ${data.errores.length} errores:\n` + data.errores.join('\n');
+      alert(msg);
+    } else {
+      alert('❌ Error: ' + (data.detail || data.mensaje || 'Error al importar'));
+    }
+  })
+  .catch(error => { console.error(error); alert('❌ Error al importar CSV'); })
+  .finally(() => { mostrarLoading(false); event.target.value = ''; });
+}
+
+// ─── EXPORTAR (usa AG Grid built-in CSV export) ────────────────────────────────
+function exportarExcel() {
+  if (gridApi) {
+    gridApi.exportDataAsCsv({
+      fileName: `lista-oficial-${Date.now()}.csv`,
+      processCellCallback: params => {
+        const val = params.value;
+        if (typeof val === 'string') return val.replace(/<[^>]+>/g, '');
+        return val;
+      },
+    });
+    return;
+  }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function descargarCSVBlob(csv, filename) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function mostrarLoading(show) {
+  const overlay = document.getElementById('loadingOverlay');
+  if (!overlay) return;
+  overlay.classList.toggle('show', show);
+}
+
+function mostrarError(mensaje) {
+  if (gridApi) gridApi.setGridOption('rowData', []);
+  console.error('Error:', mensaje);
+  alert('❌ Error al cargar datos: ' + mensaje);
+}
+</script>
+</body>
+</html>
